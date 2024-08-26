@@ -1,7 +1,7 @@
 package org.example
 
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
-import java.time.Instant
 import java.util.UUID
 
 @Serializable(with = OrderSideSerializer::class)
@@ -19,6 +19,7 @@ enum class OrderSide {
     }
 }
 
+@Serializable(with = CurrencyPairSerializer::class)
 enum class CurrencyPair {
     BTCZAR,
     ETHZAR,
@@ -404,7 +405,7 @@ data class Order(
     val side: OrderSide,
     val quantity: Int,
     val price: Int,
-    val currencyPair: String,
+    val currencyPair: CurrencyPair,
     val orderCount: Int
 )
 

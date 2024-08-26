@@ -40,3 +40,12 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+/.idea/codeStyles/codeStyleConfig.xml
+/.idea/gradle.xml
+/.idea/kotlinc.xml
+/.idea/material_theme_project_new.xml
+/.idea/misc.xml
+/.idea/codeStyles/Project.xml
+/.idea/scala_compiler.xml
+/.idea/vcs.xml
+/.idea/.gitignore
