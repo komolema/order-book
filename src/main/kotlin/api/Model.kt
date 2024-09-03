@@ -1,7 +1,9 @@
-package org.example
+package org.example.api
 
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import org.example.CurrencyPairSerializer
+import org.example.OrderSideSerializer
 import java.util.UUID
 
 @Serializable(with = OrderSideSerializer::class)
@@ -404,10 +406,14 @@ data class Order(
     val id: String = UUID.randomUUID().toString(),
     val side: OrderSide,
     val quantity: Int,
-    val price: Int,
+    val price: Double,
     val currencyPair: CurrencyPair,
     val orderCount: Int
-)
+): Comparable<Order> {
+    override fun compareTo(other: Order): Int {
+        return this.quantity.compareTo(other.quantity)
+    }
+}
 
 @Serializable
 data class OrderBook(

@@ -21,6 +21,11 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.7.1")
 
+    implementation(platform("io.arrow-kt:arrow-stack:1.2.4"))
+    // no versions on libraries
+    implementation("io.arrow-kt:arrow-core")
+    implementation("io.arrow-kt:arrow-fx-coroutines")
+
     implementation("io.vertx:vertx-core:4.5.9")
     implementation("io.vertx:vertx-lang-kotlin:4.5.9")
     implementation("io.vertx:vertx-lang-kotlin-coroutines:4.5.9")

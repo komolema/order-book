@@ -6,6 +6,8 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import org.example.api.CurrencyPair
+import org.example.api.OrderSide
 
 object OrderSideSerializer: KSerializer<OrderSide> {
     override val descriptor: SerialDescriptor =
