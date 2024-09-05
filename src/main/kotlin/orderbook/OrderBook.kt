@@ -8,12 +8,12 @@ class OrderBook(private val matchingEngine: MatchingEngine) {
     private val buyOrders = PriorityQueue<Order>()
     private val sellOrders = PriorityQueue<Order>()
 
-    fun addBuyOrder(order: Order) {
+    fun addLimitBuyOrder(order: Order) {
         buyOrders.add(order)
         this.matchOrder()
     }
 
-    fun addSellOrder(order: Order) {
+    fun addLimitSellOrder(order: Order) {
         sellOrders.add(order)
         this.matchOrder()
     }
@@ -31,6 +31,6 @@ class OrderBook(private val matchingEngine: MatchingEngine) {
         }
     }
 
-    fun getBuyOrders(): PriorityQueue<Order> = buyOrders
-    fun getSellOrders(): PriorityQueue<Order> = sellOrders
+    fun getBuyOrders(): List<Order> = buyOrders.toList()
+    fun getSellOrders(): List<Order> = sellOrders.toList()
 }
