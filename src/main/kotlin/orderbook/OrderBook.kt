@@ -1,10 +1,8 @@
 package org.example.orderbook
 
+
 import org.example.api.Order
-import java.util.PriorityQueue
-
-
-import java.util.TreeMap
+import java.util.*
 
 class OrderBook(private val matchingEngine: MatchingEngine) {
     private val buyOrders = PriorityQueue<Order>()
@@ -25,6 +23,12 @@ class OrderBook(private val matchingEngine: MatchingEngine) {
         val sellOrder = sellOrders.peek()
 
         val orderMatchEvent = this.matchingEngine.limitMatchOrder(buyOrder, sellOrder)
+
+        when (orderMatchEvent) {
+            is OrderMatchEvent.OrderFilled -> {}
+            is OrderMatchEvent.PartialOrderFilled -> {}
+            is OrderMatchEvent.OrderNotFilled -> {}
+        }
     }
 
     fun getBuyOrders(): PriorityQueue<Order> = buyOrders

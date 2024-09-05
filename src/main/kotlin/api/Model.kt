@@ -408,7 +408,6 @@ data class Order(
     val quantity: Int,
     val price: Double,
     val currencyPair: CurrencyPair,
-    val orderCount: Int
 ): Comparable<Order> {
     override fun compareTo(other: Order): Int {
         return this.quantity.compareTo(other.quantity)

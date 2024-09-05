@@ -49,7 +49,7 @@ class MatchingEngineImpl : MatchingEngine {
                     partialSellOrder = Some(partialSellOrder)
                 )
             } else {
-                val partialBuyOrder = buyOrder.copy(quantity = sellOrder.quantity - buyOrder.quantity)
+                val partialBuyOrder = buyOrder.copy(quantity = buyOrder.quantity - sellOrder.quantity)
                 return OrderMatchEvent.PartialOrderFilled(
                     filledOrder = OrderMatchEvent.OrderFilled(
                         buyOrderID = buyOrder.id,
