@@ -19,10 +19,15 @@ class OrderServiceImpl(val orderBookDB: OrderBookDB) : OrderService {
     }
 
     override fun getOrderBook(currencyPair: CurrencyPair): OrderBook {
-        TODO("Not yet implemented")
+        val asks = this.orderBookDB.getBuyOrders(currencyPair)
+        val bids = this.orderBookDB.getSellOrders(currencyPair)
+        return OrderBook(
+            asks = asks,
+            bids = bids
+        )
     }
 
-    override fun tradeHistory(currencyPair: CurrencyPair) {
+    override fun tradeHistory(currencyPair: CurrencyPair): List<FilledOrder> {
         TODO("Not yet implemented")
     }
 }

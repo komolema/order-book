@@ -416,10 +416,8 @@ data class Order(
 
 @Serializable
 data class OrderBook(
-    val sequence: Long,
     val asks: List<Order>,
     val bids: List<Order>,
-    val lastChange: Instant
 )
 
 
