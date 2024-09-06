@@ -405,7 +405,7 @@ enum class CurrencyPair {
 data class Order(
     val id: String = UUID.randomUUID().toString(),
     val side: OrderSide,
-    val quantity: Int,
+    val quantity: Double,
     val price: Double,
     val currencyPair: CurrencyPair,
 ): Comparable<Order> {
@@ -422,5 +422,15 @@ data class OrderBook(
     val lastChange: Instant
 )
 
+
+
 @Serializable
-data class TradeHistory()
+data class FilledOrder(
+    val id: String,
+    val takerSide: OrderSide,
+    val quantity: Double,
+    val quoteVolume: Double,
+    val price: Double,
+    val currencyPair: CurrencyPair,
+    val sequenceId: Long,
+    val tradedAt: Instant)
