@@ -15,7 +15,7 @@ interface OrderService {
 
 class OrderServiceImpl(val orderBookDB: OrderBookDB) : OrderService {
     override fun addLimitOrder(order: Order) {
-        TODO("Not yet implemented")
+        this.orderBookDB.addLimitBuyOrder(order)
     }
 
     override fun getOrderBook(currencyPair: CurrencyPair): OrderBook {
@@ -28,6 +28,6 @@ class OrderServiceImpl(val orderBookDB: OrderBookDB) : OrderService {
     }
 
     override fun tradeHistory(currencyPair: CurrencyPair): List<FilledOrder> {
-        TODO("Not yet implemented")
+        return this.orderBookDB.getTrades(currencyPair)
     }
 }

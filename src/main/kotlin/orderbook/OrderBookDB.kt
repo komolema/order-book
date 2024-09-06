@@ -73,4 +73,7 @@ class OrderBookDB(private val matchingEngine: MatchingEngine) {
 
     fun getSellOrders(currencyPair: CurrencyPair): List<Order> =
         sellOrders[currencyPair]?.toList() ?: emptyList()
+
+    fun getTrades(currencyPair: CurrencyPair): List<FilledOrder> =
+        trades[currencyPair]?.toList() ?: emptyList()
 }
