@@ -27,6 +27,7 @@ dependencies {
     implementation("io.arrow-kt:arrow-fx-coroutines")
 
     implementation("io.vertx:vertx-core:4.5.9")
+    implementation("io.vertx:vertx-web:4.5.9")
     implementation("io.vertx:vertx-lang-kotlin:4.5.9")
     implementation("io.vertx:vertx-lang-kotlin-coroutines:4.5.9")
 

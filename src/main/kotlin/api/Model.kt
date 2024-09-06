@@ -421,3 +421,6 @@ data class OrderBook(
     val bids: List<Order>,
     val lastChange: Instant
 )
+
+@Serializable
+data class TradeHistory()
