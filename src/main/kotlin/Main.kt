@@ -14,7 +14,9 @@ suspend fun main() {
 
     val matchingEngine = MatchingEngineImpl()
     val orderBookDB = OrderBookDB(matchingEngine)
+    val orderService = OrderServiceImpl(orderBookDB)
+
     val vertx = Vertx.vertx()
-    vertx.deployVerticle(OrderBookApp(orderBookDB)).await()
+    vertx.deployVerticle(OrderBookApp(orderService)).await()
 
 }

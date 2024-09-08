@@ -13,7 +13,7 @@ interface OrderService {
     fun tradeHistory(currencyPair: CurrencyPair): List<FilledOrder>
 }
 
-class OrderServiceImpl(val orderBookDB: OrderBookDB) : OrderService {
+class OrderServiceImpl(private val orderBookDB: OrderBookDB) : OrderService {
     override fun addLimitOrder(order: Order) {
         this.orderBookDB.addLimitBuyOrder(order)
     }

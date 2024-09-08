@@ -44,11 +44,9 @@ class OrderBookDB(private val matchingEngine: MatchingEngine) {
         val buyOrder = buyOrders.computeIfAbsent(currencyPair) { PriorityQueue() }.poll()
         val sellOrder = sellOrders.computeIfAbsent(currencyPair) { PriorityQueue() }.poll()
         if (buyOrder != null && sellOrder != null) {
-            val orderMatchEvent = matchingEngine.limitMatchOrder(buyOrder, sellOrder)
-            when (orderMatchEvent) {
+            when (val orderMatchEvent = matchingEngine.limitMatchOrder(buyOrder, sellOrder)) {
                 is OrderMatchEvent.OrderFilled -> {
                     val filledBuyOrder = orderMatchEvent.buyOrder
-                    val filledSellOrder = orderMatchEvent.sellOrder
                     val filledOrder = FilledOrder(
                         takerSide = OrderSide.BUY,
                         quantity = filledBuyOrder.quantity,
@@ -67,8 +65,8 @@ class OrderBookDB(private val matchingEngine: MatchingEngine) {
                     trades[currencyPair] = filledOrdersForCurrencyPair
 
                     //remove the highest bids and asks
-                    this.buyOrders.get(currencyPair)?.poll()
-                    this.sellOrders.get(currencyPair)?.poll()
+                    this.buyOrders[currencyPair]?.poll()
+                    this.sellOrders[currencyPair]?.poll()
                 }
 
                 is OrderMatchEvent.PartialOrderFilled -> {
@@ -77,16 +75,15 @@ class OrderBookDB(private val matchingEngine: MatchingEngine) {
 
                     when (filledOrderResult) {
                         is Either.Right -> {
-                            filledOrderResult.value.let { filledOrder ->
+                            filledOrderResult.value.let { filledOrderAndPartialOrder ->
                                 {
                                     val filledOrdersForCurrencyPair =
                                         trades.computeIfAbsent(currencyPair) { mutableListOf() }
-                                    filledOrdersForCurrencyPair.add(filledOrder)
+                                    filledOrdersForCurrencyPair.add(filledOrderAndPartialOrder.filledOrder)
                                     trades[currencyPair] = filledOrdersForCurrencyPair
                                 }
                             }
                         }
-
                         is Either.Left -> println("Error: ${filledOrderResult.value}")
                     }
                 }
@@ -99,51 +96,54 @@ class OrderBookDB(private val matchingEngine: MatchingEngine) {
     private fun generateFilledOrderAndRemoveBuyOrSellSideOrder(
         orderMatchEvent: OrderMatchEvent.PartialOrderFilled,
         currencyPair: CurrencyPair
-    ): Either<String, FilledOrder> {
-
-        //TODO: I need to change this to also return the partial order, to be re added to the order book.
-        // This logic also needs to change cause their is a bug here in how I calculate the filled order. I need to use the
-        // returned filled order not the partial orders
-        val filledBuyOrder = orderMatchEvent.partialBuyOrder.orNull()!!
-        val filledSellOrder = orderMatchEvent.partialSellOrder.orNull()!!
+    ): Either<String, FilledOrderAndPartialOrder> {
+        val filledBuyOrder = orderMatchEvent.partialBuyOrder.getOrNull()!!
+        val filledSellOrder = orderMatchEvent.partialSellOrder.getOrNull()!!
+        val fOrder = orderMatchEvent.filledOrder
 
         if (orderMatchEvent.partialBuyOrder is Some) {
-
             val filledOrder = FilledOrder(
-                takerSide = OrderSide.BUY,
-                quantity = filledBuyOrder.quantity,
-                price = filledBuyOrder.price,
-                currencyPair = filledBuyOrder.currencyPair,
-                tradedAt = orderMatchEvent.fillTime,
+                takerSide = OrderSide.SELL,
+                quantity = fOrder.sellOrder.quantity,
+                price = fOrder.sellOrder.price,
+                currencyPair = fOrder.sellOrder.currencyPair,
+                tradedAt = fOrder.fillTime,
                 quoteVolume = calculateTradeVolume(
-                    filledBuyOrder.currencyPair,
-                    filledBuyOrder.price * filledBuyOrder.quantity
+                    fOrder.sellOrder.currencyPair,
+                    fOrder.sellOrder.price * fOrder.sellOrder.quantity
                 ),
                 sequenceId = incrementSequenceId()
             )
-            this.buyOrders.get(currencyPair)?.poll()
+            this.buyOrders[currencyPair]?.poll()
+            this.sellOrders[currencyPair]?.poll()
 
+            addLimitBuyOrder(filledBuyOrder)
 
-            return (filledOrder).right()
+            val filledOrderAndPartialOrder = FilledOrderAndPartialOrder(filledOrder, filledBuyOrder)
+            return (filledOrderAndPartialOrder).right()
         }
 
         if (orderMatchEvent.partialSellOrder is Some) {
-
             val filledOrder = FilledOrder(
-                takerSide = OrderSide.SELL,
-                quantity = filledSellOrder.quantity,
-                price = filledSellOrder.price,
-                currencyPair = filledSellOrder.currencyPair,
-                tradedAt = orderMatchEvent.fillTime,
+                takerSide = OrderSide.BUY,
+                quantity = fOrder.buyOrder.quantity,
+                price = fOrder.buyOrder.price,
+                currencyPair = fOrder.buyOrder.currencyPair,
+                tradedAt = fOrder.fillTime,
                 quoteVolume = calculateTradeVolume(
-                    filledSellOrder.currencyPair,
-                    filledSellOrder.price * filledSellOrder.quantity
+                    fOrder.buyOrder.currencyPair,
+                    fOrder.buyOrder.price * fOrder.buyOrder.quantity
                 ),
                 sequenceId = incrementSequenceId()
             )
 
-            this.sellOrders.get(currencyPair)?.poll()
-            return (filledOrder).right()
+            this.buyOrders[currencyPair]?.poll()
+            this.sellOrders[currencyPair]?.poll()
+
+            addLimitSellOrder(filledSellOrder)
+
+            val filledOrderAndPartialOrder = FilledOrderAndPartialOrder(filledOrder, filledSellOrder)
+            return (filledOrderAndPartialOrder).right()
         }
         val errorString =
             "There supplied buy($filledBuyOrder) or sell($filledSellOrder) orders are none, please provide values with at least one order"
@@ -159,3 +159,5 @@ class OrderBookDB(private val matchingEngine: MatchingEngine) {
     fun getTrades(currencyPair: CurrencyPair): List<FilledOrder> =
         trades[currencyPair]?.toList() ?: emptyList()
 }
+
+data class FilledOrderAndPartialOrder( val filledOrder: FilledOrder, val partialOrder: Order)
