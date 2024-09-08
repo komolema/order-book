@@ -424,7 +424,7 @@ data class OrderBook(
 
 @Serializable
 data class FilledOrder(
-    val id: String,
+    val id: String = UUID.randomUUID().toString(),
     val takerSide: OrderSide,
     val quantity: Double,
     val quoteVolume: Double,

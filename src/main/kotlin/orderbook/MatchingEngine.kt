@@ -14,8 +14,8 @@ interface MatchingEngine {
 sealed class OrderMatchEvent {
     data class OrderNotFilled(val matchTime: Instant = Clock.System.now()) : OrderMatchEvent()
     data class OrderFilled(
-        val buyOrderID: String,
-        val sellOrderID: String,
+        val buyOrder: Order,
+        val sellOrder: Order,
         val fillTime: Instant = Clock.System.now()
     ) : OrderMatchEvent()
 
@@ -33,8 +33,8 @@ class MatchingEngineImpl : MatchingEngine {
         if (buyOrder.price >= sellOrder.price) {
             if (buyOrder.quantity == sellOrder.quantity) {
                 return OrderMatchEvent.OrderFilled(
-                    buyOrderID = buyOrder.id,
-                    sellOrderID = sellOrder.id,
+                    buyOrder = buyOrder,
+                    sellOrder = sellOrder,
                 )
             } else if(buyOrder.quantity < sellOrder.quantity) {
 
@@ -42,8 +42,8 @@ class MatchingEngineImpl : MatchingEngine {
                 //Here we need to
                 return OrderMatchEvent.PartialOrderFilled(
                     filledOrder = OrderMatchEvent.OrderFilled(
-                        buyOrderID = buyOrder.id,
-                        sellOrderID = sellOrder.id
+                        buyOrder = buyOrder,
+                        sellOrder = sellOrder
                     ),
                     partialBuyOrder = None,
                     partialSellOrder = Some(partialSellOrder)
@@ -52,8 +52,8 @@ class MatchingEngineImpl : MatchingEngine {
                 val partialBuyOrder = buyOrder.copy(quantity = buyOrder.quantity - sellOrder.quantity)
                 return OrderMatchEvent.PartialOrderFilled(
                     filledOrder = OrderMatchEvent.OrderFilled(
-                        buyOrderID = buyOrder.id,
-                        sellOrderID = sellOrder.id,
+                        buyOrder = buyOrder,
+                        sellOrder = sellOrder,
                     ),
                     partialBuyOrder = Some(partialBuyOrder),
                     partialSellOrder = None,
