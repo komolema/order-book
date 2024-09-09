@@ -1,0 +1,153 @@
+### Create limit buy order
+POST http://localhost:8181/api/v1/orders/limit
+Content-Type: application/json
+
+< buy_order.json
+
+> {%
+    client.test("Status is 201", function () {
+        client.assert(response.status === 201);
+    });
+%}
+
+### Adding Buy Orders
+
+POST http://localhost:8181/api/v1/orders/limit
+Content-Type: application/json
+
+{
+  "id": "123e4567-e89b-12d3-a456-426614174001",
+  "side": "BUY",
+  "quantity": 5.0,
+  "price": 50000.0,
+  "currencyPair": "BTCZAR"
+}
+
+###
+POST http://localhost:8181/api/v1/orders/limit
+Content-Type: application/json
+
+{
+"id": "123e4567-e89b-12d3-a456-426614174002",
+"side": "BUY",
+"quantity": 3.0,
+"price": 51000.0,
+"currencyPair": "BTCZAR"
+}
+
+###
+POST http://localhost:8181/api/v1/orders/limit
+Content-Type: application/json
+
+{
+"id": "123e4567-e89b-12d3-a456-426614174003",
+"side": "BUY",
+"quantity": 1.5,
+"price": 49000.0,
+"currencyPair": "BTCZAR"
+}
+
+###
+POST http://localhost:8181/api/v1/orders/limit
+Content-Type: application/json
+
+{
+"id": "123e4567-e89b-12d3-a456-426614174004",
+"side": "BUY",
+"quantity": 2.0,
+"price": 50500.0,
+"currencyPair": "BTCZAR"
+}
+
+###
+POST http://localhost:8181/api/v1/orders/limit
+Content-Type: application/json
+
+{
+"id": "123e4567-e89b-12d3-a456-426614174005",
+"side": "BUY",
+"quantity": 4.0,
+"price": 49500.0,
+"currencyPair": "BTCZAR"
+}
+
+### Adding Sell Orders
+
+POST http://localhost:8181/api/v1/orders/limit
+Content-Type: application/json
+
+{
+  "id": "123e4567-e89b-12d3-a456-426614175001",
+  "side": "SELL",
+  "quantity": 2.0,
+  "price": 52000.0,
+  "currencyPair": "BTCZAR"
+}
+
+###
+POST http://localhost:8181/api/v1/orders/limit
+Content-Type: application/json
+
+{
+"id": "123e4567-e89b-12d3-a456-426614175002",
+"side": "SELL",
+"quantity": 1.8,
+"price": 51800.0,
+"currencyPair": "BTCZAR"
+}
+
+###
+POST http://localhost:8181/api/v1/orders/limit
+Content-Type: application/json
+
+{
+"id": "123e4567-e89b-12d3-a456-426614175003",
+"side": "SELL",
+"quantity": 2.5,
+"price": 51500.0,
+"currencyPair": "BTCZAR"
+}
+
+###
+POST http://localhost:8181/api/v1/orders/limit
+Content-Type: application/json
+
+{
+"id": "123e4567-e89b-12d3-a456-426614175004",
+"side": "SELL",
+"quantity": 1.0,
+"price": 53000.0,
+"currencyPair": "BTCZAR"
+}
+
+####
+POST http://localhost:8181/api/v1/orders/limit
+Content-Type: application/json
+
+{
+"id": "123e4567-e89b-12d3-a456-426614175005",
+"side": "SELL",
+"quantity": 3.0,
+"price": 52500.0,
+"currencyPair": "BTCZAR"
+}
+
+
+### Get the Order Book
+GET http://localhost:8181/api/v1/BTCZAR/orderbook
+
+> {%
+    client.test("Status is 200", function () {
+        client.assert(response.status === 200);
+    });
+%}
+
+### Get the Trade History
+GET http://localhost:8181/api/v1/BTCZAR/tradehistory
+
+> {%
+    client.test("Status is 200", function () {
+        client.assert(response.status === 200);
+    });
+%}
+

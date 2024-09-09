@@ -1,9 +1,6 @@
 package org.example.orderbook
 
-import arrow.core.Either
-import arrow.core.Some
-import arrow.core.left
-import arrow.core.right
+import arrow.core.*
 import org.example.api.CurrencyPair
 import org.example.api.FilledOrder
 import org.example.api.Order
@@ -28,23 +25,26 @@ class OrderBookDB(private val matchingEngine: MatchingEngine) {
     }
 
     fun addLimitBuyOrder(order: Order) {
-        addOrder(order, buyOrders)
+        addLimitOrder(order, buyOrders)
     }
 
     fun addLimitSellOrder(order: Order) {
-        addOrder(order, sellOrders)
+        addLimitOrder(order, sellOrders)
     }
 
-    private fun addOrder(order: Order, ordersMap: MutableMap<CurrencyPair, PriorityQueue<Order>>) {
+    private fun addLimitOrder(order: Order, ordersMap: MutableMap<CurrencyPair, PriorityQueue<Order>>) {
         ordersMap.computeIfAbsent(order.currencyPair) { PriorityQueue() }.add(order)
         processOrderMatching(order.currencyPair)
     }
 
     private fun processOrderMatching(currencyPair: CurrencyPair) {
-        val buyOrder = buyOrders.computeIfAbsent(currencyPair) { PriorityQueue() }.poll()
-        val sellOrder = sellOrders.computeIfAbsent(currencyPair) { PriorityQueue() }.poll()
-        if (buyOrder != null && sellOrder != null) {
-            when (val orderMatchEvent = matchingEngine.limitMatchOrder(buyOrder, sellOrder)) {
+        val buyOrderOption = buyOrders.computeIfAbsent(currencyPair) { PriorityQueue() }.peek().toOption()
+        val sellOrderOption = sellOrders.computeIfAbsent(currencyPair) { PriorityQueue() }.peek().toOption()
+
+        if (buyOrderOption.isSome()  && sellOrderOption.isSome()) {
+            val buyOrder = buyOrderOption.getOrNull()
+            val sellOrder = sellOrderOption.getOrNull()
+            when (val orderMatchEvent = matchingEngine.limitMatchOrder(buyOrder!!, sellOrder!!)) {
                 is OrderMatchEvent.OrderFilled -> {
                     val filledBuyOrder = orderMatchEvent.buyOrder
                     val filledOrder = FilledOrder(

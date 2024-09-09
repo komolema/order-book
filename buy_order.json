@@ -1,0 +1,7 @@
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "side": "BUY",
+  "quantity": 10.5,
+  "price": 100.0,
+  "currencyPair": "ETHZAR"
+}

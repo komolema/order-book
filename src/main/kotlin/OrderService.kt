@@ -1,9 +1,6 @@
 package org.example
 
-import org.example.api.CurrencyPair
-import org.example.api.FilledOrder
-import org.example.api.Order
-import org.example.api.OrderBook
+import org.example.api.*
 import org.example.orderbook.OrderBookDB
 
 interface OrderService {
@@ -15,7 +12,11 @@ interface OrderService {
 
 class OrderServiceImpl(private val orderBookDB: OrderBookDB) : OrderService {
     override fun addLimitOrder(order: Order) {
-        this.orderBookDB.addLimitBuyOrder(order)
+        if(order.side == OrderSide.BUY){
+            this.orderBookDB.addLimitBuyOrder(order)
+        } else {
+            this.orderBookDB.addLimitSellOrder(order)
+        }
     }
 
     override fun getOrderBook(currencyPair: CurrencyPair): OrderBook {

@@ -412,6 +412,7 @@ data class Order(
     override fun compareTo(other: Order): Int {
         return this.quantity.compareTo(other.quantity)
     }
+    constructor(): this(UUID.randomUUID().toString(), OrderSide.BUY, 0.0, 0.0, CurrencyPair.ETHBTC)
 }
 
 @Serializable
@@ -419,8 +420,6 @@ data class OrderBook(
     val asks: List<Order>,
     val bids: List<Order>,
 )
-
-
 
 @Serializable
 data class FilledOrder(
