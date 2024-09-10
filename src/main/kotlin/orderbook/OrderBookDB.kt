@@ -41,7 +41,7 @@ class OrderBookDB(private val matchingEngine: MatchingEngine) {
         val buyOrderOption = buyOrders.computeIfAbsent(currencyPair) { PriorityQueue() }.peek().toOption()
         val sellOrderOption = sellOrders.computeIfAbsent(currencyPair) { PriorityQueue() }.peek().toOption()
 
-        if (buyOrderOption.isSome()  && sellOrderOption.isSome()) {
+        if (buyOrderOption.isSome() && sellOrderOption.isSome()) {
             val buyOrder = buyOrderOption.getOrNull()
             val sellOrder = sellOrderOption.getOrNull()
             when (val orderMatchEvent = matchingEngine.limitMatchOrder(buyOrder!!, sellOrder!!)) {
@@ -75,15 +75,14 @@ class OrderBookDB(private val matchingEngine: MatchingEngine) {
 
                     when (filledOrderResult) {
                         is Either.Right -> {
-                            filledOrderResult.value.let { filledOrderAndPartialOrder ->
-                                {
-                                    val filledOrdersForCurrencyPair =
-                                        trades.computeIfAbsent(currencyPair) { mutableListOf() }
-                                    filledOrdersForCurrencyPair.add(filledOrderAndPartialOrder.filledOrder)
-                                    trades[currencyPair] = filledOrdersForCurrencyPair
-                                }
-                            }
+                            val filledOrderAndPartialOrder = filledOrderResult.value
+
+                            val filledOrdersForCurrencyPair =
+                                trades.computeIfAbsent(currencyPair) { mutableListOf() }
+                            filledOrdersForCurrencyPair.add(filledOrderAndPartialOrder.filledOrder)
+                            trades[currencyPair] = filledOrdersForCurrencyPair
                         }
+
                         is Either.Left -> println("Error: ${filledOrderResult.value}")
                     }
                 }
@@ -161,4 +160,4 @@ class OrderBookDB(private val matchingEngine: MatchingEngine) {
         trades[currencyPair]?.toList() ?: emptyList()
 }
 
-data class FilledOrderAndPartialOrder( val filledOrder: FilledOrder, val partialOrder: Order)
+data class FilledOrderAndPartialOrder(val filledOrder: FilledOrder, val partialOrder: Order)
