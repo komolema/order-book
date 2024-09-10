@@ -31,9 +31,12 @@ dependencies {
     implementation("io.vertx:vertx-lang-kotlin:4.5.9")
     implementation("io.vertx:vertx-lang-kotlin-coroutines:4.5.9")
 
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4")
-    implementation("com.fasterxml.jackson.core:jackson-core:2.13.4")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:2.13.4")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.17.2")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.17.2")
+
+    implementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+
 }
 
 tasks.test {

@@ -97,11 +97,11 @@ class OrderBookDB(private val matchingEngine: MatchingEngine) {
         orderMatchEvent: OrderMatchEvent.PartialOrderFilled,
         currencyPair: CurrencyPair
     ): Either<String, FilledOrderAndPartialOrder> {
-        val filledBuyOrder = orderMatchEvent.partialBuyOrder.getOrNull()!!
-        val filledSellOrder = orderMatchEvent.partialSellOrder.getOrNull()!!
         val fOrder = orderMatchEvent.filledOrder
 
         if (orderMatchEvent.partialBuyOrder is Some) {
+            val filledBuyOrder = orderMatchEvent.partialBuyOrder.getOrNull()!!
+
             val filledOrder = FilledOrder(
                 takerSide = OrderSide.SELL,
                 quantity = fOrder.sellOrder.quantity,
@@ -124,6 +124,7 @@ class OrderBookDB(private val matchingEngine: MatchingEngine) {
         }
 
         if (orderMatchEvent.partialSellOrder is Some) {
+            val filledSellOrder = orderMatchEvent.partialSellOrder.getOrNull()!!
             val filledOrder = FilledOrder(
                 takerSide = OrderSide.BUY,
                 quantity = fOrder.buyOrder.quantity,
@@ -146,7 +147,7 @@ class OrderBookDB(private val matchingEngine: MatchingEngine) {
             return (filledOrderAndPartialOrder).right()
         }
         val errorString =
-            "There supplied buy($filledBuyOrder) or sell($filledSellOrder) orders are none, please provide values with at least one order"
+            "There supplied partial buy or partial sell orders are none, please provide values with at least one order"
         return errorString.left()
     }
 
