@@ -22,14 +22,15 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.7.1")
 
     implementation(platform("io.arrow-kt:arrow-stack:1.2.4"))
-    // no versions on libraries
     implementation("io.arrow-kt:arrow-core")
     implementation("io.arrow-kt:arrow-fx-coroutines")
 
-    implementation("io.vertx:vertx-core:4.5.9")
-    implementation("io.vertx:vertx-web:4.5.9")
-    implementation("io.vertx:vertx-lang-kotlin:4.5.9")
-    implementation("io.vertx:vertx-lang-kotlin-coroutines:4.5.9")
+    implementation("io.vertx:vertx-core:4.5.10")
+    implementation("io.vertx:vertx-web:4.5.10")
+    implementation("io.vertx.vertx-auth-oauth2:4.5.10")
+    implementation("io.vertx:vertx-lang-kotlin:4.5.10")
+    implementation("io.vertx:vertx-lang-kotlin-coroutines:4.5.10")
+
 
     implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
     implementation("com.fasterxml.jackson.core:jackson-core:2.17.2")
