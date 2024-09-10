@@ -87,6 +87,48 @@ class OrderBookDBTest {
     }
 
     @Test
+    fun `test process order matching with PartialOrderFilled event for sell side`() {
+        // Create the buy order
+        val id = UUID.randomUUID().toString()
+        val buyOrder = Order(UUID.randomUUID().toString(), OrderSide.BUY, 100.0, 120.0, CurrencyPair.BTCZAR)
+
+        // Create the sell order
+        val sellOrder = Order(id, OrderSide.SELL, 300.0, 120.0, CurrencyPair.BTCZAR)
+        val partialSellOrder = Order(id, OrderSide.SELL, 200.0, 120.0, CurrencyPair.BTCZAR)
+
+        // Convert sellOrder to OrderMatchEvent.OrderFilled type
+        val filledSellOrder = OrderMatchEvent.OrderFilled(
+            buyOrder = buyOrder,
+            sellOrder = sellOrder
+        )
+
+        // Mock the limitMatchOrder to return PartialOrderFilled event
+        whenever(matchingEngine.limitMatchOrder(buyOrder, sellOrder))
+            .thenReturn(
+                OrderMatchEvent.PartialOrderFilled(
+                    filledSellOrder,
+                    None,
+                    Some(partialSellOrder),
+                    Clock.System.now()
+                )
+            )
+
+        // Add orders to the order book
+        orderBookDB.addLimitBuyOrder(buyOrder)
+        orderBookDB.addLimitSellOrder(sellOrder)
+
+        // Retrieve orders and trades from the order book
+        val buyOrders = orderBookDB.getBuyOrders(CurrencyPair.BTCZAR)
+        val sellOrders = orderBookDB.getSellOrders(CurrencyPair.BTCZAR)
+        val trades = orderBookDB.getTrades(CurrencyPair.BTCZAR)
+
+        // Assertions
+        assertTrue(buyOrders.isEmpty(), "Buy orders should be empty after partial order match")
+        assertEquals(1, sellOrders.size, "Sell orders should be empty after partial order match")
+        assertEquals(1, trades.size, "There should be a trade after partial order match")
+    }
+
+    @Test
     fun `test process order matching with OrderNotFilled event`() {
         val buyOrder = Order(UUID.randomUUID().toString(), OrderSide.BUY, 100.0, 120.0, CurrencyPair.BTCZAR)
         val sellOrder = Order(UUID.randomUUID().toString(), OrderSide.SELL, 200.0, 120.0, CurrencyPair.BTCZAR)
