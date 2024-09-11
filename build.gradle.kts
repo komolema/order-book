@@ -27,7 +27,8 @@ dependencies {
 
     implementation("io.vertx:vertx-core:4.5.10")
     implementation("io.vertx:vertx-web:4.5.10")
-    implementation("io.vertx.vertx-auth-oauth2:4.5.10")
+    implementation("io.vertx:vertx-auth-jwt:4.5.10")
+    implementation("io.vertx:vertx-auth-oauth2:4.5.10")
     implementation("io.vertx:vertx-lang-kotlin:4.5.10")
     implementation("io.vertx:vertx-lang-kotlin-coroutines:4.5.10")
 
