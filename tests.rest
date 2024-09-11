@@ -1,6 +1,7 @@
 ### Create limit buy order
 POST http://localhost:8282/api/v1/orders/limit
 Content-Type: application/json
+Authorization: Bearer
 
 < buy_order.json
 
