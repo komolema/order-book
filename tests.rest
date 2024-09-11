@@ -1,7 +1,7 @@
 ### Create limit buy order
 POST http://localhost:8282/api/v1/orders/limit
 Content-Type: application/json
-Authorization: Bearer
+Authorization: Bearer {{ACCESS_TOKEN}}
 
 < buy_order.json
 
@@ -15,6 +15,7 @@ Authorization: Bearer
 
 POST http://localhost:8282/api/v1/orders/limit
 Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
 
 {
   "id": "123e4567-e89b-12d3-a456-426614174001",
@@ -27,6 +28,7 @@ Content-Type: application/json
 ###
 POST http://localhost:8282/api/v1/orders/limit
 Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
 
 {
 "id": "123e4567-e89b-12d3-a456-426614174002",
@@ -39,6 +41,7 @@ Content-Type: application/json
 ###
 POST http://localhost:8282/api/v1/orders/limit
 Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
 
 {
 "id": "123e4567-e89b-12d3-a456-426614174003",
@@ -51,6 +54,7 @@ Content-Type: application/json
 ###
 POST http://localhost:8282/api/v1/orders/limit
 Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
 
 {
 "id": "123e4567-e89b-12d3-a456-426614174004",
@@ -63,6 +67,7 @@ Content-Type: application/json
 ###
 POST http://localhost:8282/api/v1/orders/limit
 Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
 
 {
 "id": "123e4567-e89b-12d3-a456-426614174005",
@@ -76,6 +81,7 @@ Content-Type: application/json
 
 POST http://localhost:8282/api/v1/orders/limit
 Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
 
 {
   "id": "123e4567-e89b-12d3-a456-426614175001",
@@ -88,6 +94,7 @@ Content-Type: application/json
 ###
 POST http://localhost:8282/api/v1/orders/limit
 Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
 
 {
 "id": "123e4567-e89b-12d3-a456-426614175002",
@@ -100,6 +107,7 @@ Content-Type: application/json
 ###
 POST http://localhost:8282/api/v1/orders/limit
 Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
 
 {
 "id": "123e4567-e89b-12d3-a456-426614175003",
@@ -112,6 +120,7 @@ Content-Type: application/json
 ###
 POST http://localhost:8282/api/v1/orders/limit
 Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
 
 {
 "id": "123e4567-e89b-12d3-a456-426614175004",
@@ -124,6 +133,7 @@ Content-Type: application/json
 ####
 POST http://localhost:8282/api/v1/orders/limit
 Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
 
 {
 "id": "123e4567-e89b-12d3-a456-426614175005",
@@ -136,6 +146,7 @@ Content-Type: application/json
 
 ### Get the Order Book
 GET http://localhost:8282/api/v1/BTCZAR/orderbook
+Authorization: Bearer {{ACCESS_TOKEN}}
 
 > {%
     client.test("Status is 200", function () {
@@ -145,6 +156,7 @@ GET http://localhost:8282/api/v1/BTCZAR/orderbook
 
 ### Get the Trade History
 GET http://localhost:8282/api/v1/BTCZAR/tradehistory
+Authorization: Bearer {{ACCESS_TOKEN}}
 
 > {%
     client.test("Status is 200", function () {
