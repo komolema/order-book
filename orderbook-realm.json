@@ -529,6 +529,28 @@
       },
       "notBefore": 0,
       "groups": []
+    },
+    {
+      "id": "14e34d91-a10c-4994-9d30-f3fd057ef1d1",
+      "username": "orderbook-app-user",
+      "createdTimestamp": 1726057674748,
+      "emailVerified": false,
+      "firstName": "test",
+      "lastName": "test",
+      "enabled": true,
+      "totp": false,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin",
+          "temporary": false
+        }
+      ],
+      "requiredActions": [],
+      "realmRoles": [
+        "default-roles-orderbook"
+      ],
+      "email": "test@gmail.com"
     }
   ],
   "scopeMappings": [
