@@ -29,7 +29,7 @@ class OrderBookApp(private val orderService: OrderService) : CoroutineVerticle()
         val oauth2Options = OAuth2Options().apply {
             clientId = "orderbook-app"
             site = "http://localhost:9090/realms/orderbook"
-            clientSecret = "bgGO5Z3oPFweuxmX5rY0bR8uaLFkAqSC"
+            clientSecret = "12345"
         }
 
         val oauth2Provider: OAuth2Auth = KeycloakAuth.discoverAwait(vertx, oauth2Options)
